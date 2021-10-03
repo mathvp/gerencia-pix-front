@@ -2,21 +2,22 @@
   <q-expansion-item>
     <template v-slot:header>
       <q-item-section avatar class="q-py-sm">
-        <q-avatar rounded size="60px">
-          <img :src="bankData.iconSrc">
+        <q-avatar rounded color="primary" text-color="white" size="60px">
+          <span v-if="!bankData.image_url">{{ logoImage }}</span>
+          <img v-if="bankData.image_url" :src="bankData.image_url">
         </q-avatar>
       </q-item-section>
 
       <q-item-section>
         <q-item-label lines="1" class="text-bold text-h6">{{ bankData.name }}</q-item-label>
-        <q-item-label caption lines="1">{{keysCountText()}}</q-item-label>
+        <q-item-label caption lines="1">{{ keysCountText() }}</q-item-label>
       </q-item-section>
     </template>
 
     <q-card class="q-mb-lg">
       <q-card-section>
-        <p class="text-grey-8 text-caption" v-if="bankData.keys">Clique sobre a Chave para copiar</p>
-          <pix-key-item v-for="pixKey in bankData.keys" :key="pixKey.id" :pixKeyData="pixKey" />
+        <p class="text-grey-8 text-caption" v-if="bankData.pix_keys">Clique sobre a Chave para copiar</p>
+          <pix-key-item v-for="pixKey in bankData.pix_keys" :key="pixKey.id" :pixKeyData="pixKey" />
       </q-card-section>
     </q-card>
   </q-expansion-item>
@@ -41,13 +42,20 @@ export default {
   },
   methods: {
     keysCountText () {
-      const keysQtd = this.bankData.keys ? this.bankData.keys.length : 0
+      const keysQtd = this.bankData.pix_keys ? this.bankData.pix_keys.length : 0
 
       if (keysQtd > 0) {
         return keysQtd === 1 ? '1 Chave cadastrada' : `${keysQtd} Chaves cadastradas`
       }
 
       return 'Nenhuma Chave cadastrada'
+    }
+  },
+  computed: {
+    logoImage () {
+      const initials = this.bankData.name.split(' ').map(name => name[0]).join('').toUpperCase()
+
+      return initials
     }
   }
 }

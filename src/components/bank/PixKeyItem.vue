@@ -1,12 +1,12 @@
 <template>
   <q-card class="q-mb-sm bg-grey-2" flat bordered>
     <q-item clickable v-ripple>
-      <q-item-section @click="copyPixKey(pixKeyData.keyValue)">
-        <span class="text-caption">Chave {{pixKeyData.id}}:</span> <span class="text-bold text-body1">{{pixKeyData.keyValue}}</span>
+      <q-item-section @click="copyPixKey(pixKeyData.value)">
+        <span class="text-caption">Chave {{pixKeyData.id}}:</span> <span class="text-bold text-body1">{{pixKeyData.value}}</span>
       </q-item-section>
       <q-item-section top side>
         <div class="text-grey-8 q-gutter-xs">
-          <q-btn size="12px" @click="copyPixKey(pixKeyData.keyValue)" flat dense round icon="content_copy" />
+          <q-btn size="12px" @click="copyPixKey(pixKeyData.value)" flat dense round icon="content_copy" />
           <q-btn-dropdown flat dense round dropdown-icon="more_vert" >
             <q-list>
               <q-item clickable @click="onItemClick">
@@ -64,7 +64,7 @@ export default {
       })
     },
     onItemClick () {
-      console.log('Clicked on an Item')
+      console.log('Clicked on an Item', this.pixKeyData.value)
     }
   }
 }

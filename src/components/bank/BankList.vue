@@ -8,7 +8,7 @@
 
 <script>
 import BankItem from './BankItem.vue'
-import TestService from '../../services/TestService'
+import BankService from '../../services/BankService'
 
 export default {
   name: 'BankList',
@@ -22,8 +22,9 @@ export default {
   },
   methods: {
     async getBankData () {
-      const response = await TestService.getData()
-      this.myBanksList = response.data.test
+      const userId = 1
+      const response = await BankService.getUserBanks(userId)
+      this.myBanksList = response.data
     }
   },
   created () {
