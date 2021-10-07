@@ -60,7 +60,7 @@ const linksData = [
     title: 'Cadastrar Chave',
     caption: 'Pix',
     icon: 'pix',
-    link: { name: 'addBank' }
+    link: { name: 'addPixKey' }
   }
 ]
 
