@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md" style="width: 100%">
     <q-list bordered class="rounded-borders bg-white" separator>
-      <bank-item v-for="bank in myBanksList" :key="bank.id" :bankData="bank" />
+      <bank-item v-for="bank in myBanksList" :key="bank.code" :bankData="bank" />
     </q-list>
   </div>
 </template>

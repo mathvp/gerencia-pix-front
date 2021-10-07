@@ -2,9 +2,9 @@
   <q-expansion-item>
     <template v-slot:header>
       <q-item-section avatar class="q-py-sm">
-        <q-avatar rounded color="primary" text-color="white" size="60px">
-          <span v-if="!bankData.image_url">{{ logoImage }}</span>
-          <img v-if="bankData.image_url" :src="bankData.image_url">
+        <q-avatar class="bankAvatar text-bold" rounded :style="avatarBackground" text-color="white" size="60px">
+          <span v-if="!bankData.image">{{ logoImage }}</span>
+          <img v-if="bankData.image" :src="bankData.image">
         </q-avatar>
       </q-item-section>
 
@@ -38,6 +38,10 @@ export default {
     bankData: {
       type: Object,
       default: () => {}
+    },
+    avatarColor: {
+      type: String,
+      default: '#009e8c'
     }
   },
   methods: {
@@ -53,10 +57,19 @@ export default {
   },
   computed: {
     logoImage () {
-      const initials = this.bankData.name.split(' ').map(name => name[0]).join('').toUpperCase()
+      const initials = this.bankData.name[0].toUpperCase()
 
       return initials
+    },
+    avatarBackground () {
+      return `background-color: ${this.avatarColor}`
     }
   }
 }
 </script>
+
+<style>
+  .bankAvatar span {
+    text-shadow: 1px 1px 2px rgba(0,0,0,.3);
+  }
+</style>

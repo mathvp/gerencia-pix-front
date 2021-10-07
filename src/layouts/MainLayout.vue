@@ -54,13 +54,13 @@ const linksData = [
     title: 'Cadastrar Banco',
     caption: 'Instituições Financeiras',
     icon: 'account_balance',
-    link: '#'
+    link: { name: 'addBank' }
   },
   {
     title: 'Cadastrar Chave',
     caption: 'Pix',
     icon: 'pix',
-    link: '#'
+    link: { name: 'addBank' }
   }
 ]
 
