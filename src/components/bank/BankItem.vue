@@ -10,7 +10,7 @@
 
       <q-item-section>
         <q-item-label lines="1" class="text-bold text-h6">{{ bankData.name }}</q-item-label>
-        <q-item-label caption lines="1">{{ keysCountText() }}</q-item-label>
+        <q-item-label class="keys-counter" caption lines="1">{{ keysCountText() }}</q-item-label>
       </q-item-section>
     </template>
 
@@ -37,7 +37,17 @@ export default {
   props: {
     bankData: {
       type: Object,
-      default: () => {}
+      default: () => {
+        return {
+          code: null,
+          color: '',
+          image: '',
+          longName: '',
+          name: '',
+          order: null,
+          pix_keys: []
+        }
+      }
     },
     avatarColor: {
       type: String,
@@ -57,7 +67,7 @@ export default {
   },
   computed: {
     logoImage () {
-      const initials = this.bankData.name[0].toUpperCase()
+      const initials = this.bankData.name ? this.bankData.name[0].toUpperCase() : ''
 
       return initials
     },
