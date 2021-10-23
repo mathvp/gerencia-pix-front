@@ -61,6 +61,12 @@ const linksData = [
     caption: 'Pix',
     icon: 'pix',
     link: { name: 'addPixKey' }
+  },
+  {
+    title: 'Sair',
+    caption: 'Logout',
+    icon: 'logout',
+    link: { name: 'logout' }
   }
 ]
 

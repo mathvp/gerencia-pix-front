@@ -9,6 +9,14 @@ const routes = [
       { path: 'nova-chave', component: () => import('pages/NewPixKey.vue'), name: 'addPixKey' }
     ]
   },
+  {
+    path: '/auth',
+    component: () => import('layouts/LoginLayout.vue'),
+    children: [
+      { path: '/login', component: () => import('pages/Login.vue'), name: 'login' },
+      { path: '/sair', component: () => import('pages/Logout.vue'), name: 'logout' }
+    ]
+  },
 
   // Always leave this as last one,
   // but you can also remove it
