@@ -81,7 +81,10 @@ export default {
       email: null,
       password: null,
       loginError: false,
-      errorMessage: ''
+      errorMessage: '',
+      messages: [
+        'Você precisa estar logado para acessar esse recurso'
+      ]
     }
   },
 
@@ -97,6 +100,16 @@ export default {
     },
     async login () {
       return await AccountService.login(this.email, this.password)
+    }
+  },
+  mounted () {
+    const showMessage = this.$route.params.msg ? this.$route.params.msg : null
+
+    if (!(showMessage === null || (showMessage - 1) > this.messages.length)) {
+      this.$q.notify({
+        type: 'warning',
+        message: this.messages[showMessage - 1]
+      })
     }
   }
 }

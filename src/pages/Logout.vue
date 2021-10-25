@@ -10,6 +10,8 @@ export default {
   async created () {
     await AccountService.logout().then(() => {
       this.$router.push({ name: 'login' })
+    }).catch(() => {
+      this.$router.push({ name: 'login' })
     })
   }
 }

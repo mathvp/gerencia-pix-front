@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 
 import routes from './routes'
 
+import AccountService from '../services/AccountService'
+
 Vue.use(VueRouter)
 
 /*
@@ -24,6 +26,18 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  })
+
+  Router.beforeEach((to, from, next) => {
+    if (to.name === 'login') {
+      next() // login route is always  okay (we could use the requires auth flag below). prevent a redirect loop
+    } else if (to.meta && to.meta.requiresAuth === false) {
+      next() // requires auth is explicitly set to false
+    } else if (AccountService.isLoggedIn()) {
+      next() // i'm logged in. carry on
+    } else {
+      next({ name: 'login', params: { msg: '1' } }) // always put your redirect as the default case
+    }
   })
 
   return Router

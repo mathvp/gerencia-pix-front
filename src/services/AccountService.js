@@ -26,7 +26,7 @@ export default {
   logout () {
     return new Promise((resolve, reject) => {
       if (!LocalStorage.has('token')) {
-        return { status: 200, data: {} }
+        resolve()
       }
       LocalStorage.set('token', null)
       LocalStorage.set('id', null)
@@ -48,5 +48,11 @@ export default {
       })
 
     return response
+  },
+  isLoggedIn () {
+    if (LocalStorage.has('token') && (LocalStorage.getItem('token') !== null) && LocalStorage.has('id') && (LocalStorage.getItem('id') !== null)) {
+      return true
+    }
+    return false
   }
 }

@@ -13,9 +13,9 @@ const routes = [
     path: '/auth',
     component: () => import('layouts/LoginLayout.vue'),
     children: [
-      { path: '/login', component: () => import('pages/Login.vue'), name: 'login' },
-      { path: '/sair', component: () => import('pages/Logout.vue'), name: 'logout' },
-      { path: '/cadastro', component: () => import('pages/Register.vue'), name: 'register' }
+      { path: '/login/:msg?', component: () => import('pages/Login.vue'), name: 'login', meta: { requiresAuth: false } },
+      { path: '/sair', component: () => import('pages/Logout.vue'), name: 'logout', meta: { requiresAuth: false } },
+      { path: '/cadastro', component: () => import('pages/Register.vue'), name: 'register', meta: { requiresAuth: false } }
     ]
   },
 
