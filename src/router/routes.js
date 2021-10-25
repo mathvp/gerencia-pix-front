@@ -14,7 +14,8 @@ const routes = [
     component: () => import('layouts/LoginLayout.vue'),
     children: [
       { path: '/login', component: () => import('pages/Login.vue'), name: 'login' },
-      { path: '/sair', component: () => import('pages/Logout.vue'), name: 'logout' }
+      { path: '/sair', component: () => import('pages/Logout.vue'), name: 'logout' },
+      { path: '/cadastro', component: () => import('pages/Register.vue'), name: 'register' }
     ]
   },
 

@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import LoginService from '../services/LoginService'
+import AccountService from '../services/AccountService'
 
 export default {
   name: 'Logout',
   async created () {
-    await LoginService.logout().then(() => {
+    await AccountService.logout().then(() => {
       this.$router.push({ name: 'login' })
     })
   }

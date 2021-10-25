@@ -34,5 +34,19 @@ export default {
       LocalStorage.remove('id')
       resolve()
     })
+  },
+  async register (userData) {
+    const response = await axiosInstance.post('/users', {
+      ...userData
+    })
+      .then((res) => {
+        return { status: res.status, data: res.data }
+      })
+      .catch((error) => {
+        console.log(error)
+        return { status: error.response.status, message: error.response.data.error }
+      })
+
+    return response
   }
 }

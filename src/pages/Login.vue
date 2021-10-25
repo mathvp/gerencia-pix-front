@@ -45,7 +45,7 @@
 
           <router-link
             class="text-white text-body2 create-account-link"
-            :to="{ path: '#' }"
+            :to="{ name: 'register' }"
           >
             Ainda não tem uma conta? Clique aqui
           </router-link>
@@ -73,7 +73,7 @@
 </template>
 
 <script>
-import LoginService from '../services/LoginService'
+import AccountService from '../services/AccountService'
 
 export default {
   data () {
@@ -96,13 +96,13 @@ export default {
       })
     },
     async login () {
-      return await LoginService.login(this.email, this.password)
+      return await AccountService.login(this.email, this.password)
     }
   }
 }
 </script>
 
-<style>
+<style scoped>
 .login-bg::before {
   background-image: url('../assets/login-bg.jpg');
   height: 100%;
@@ -139,12 +139,6 @@ export default {
   text-shadow: 0 .7rem 2rem rgba(7, 102, 93, 0.6);
 }
 
-.q-field--filled.q-field--highlighted .q-field__control::before,
-.q-field--filled .q-field__control::before {
-  background: rgb(255, 255, 255);
-  opacity: 1;
-}
-
 .form-wrapper {
   width: 100%;
   max-width: 300px;
@@ -153,5 +147,13 @@ export default {
 .create-account-link {
   text-decoration: none;
   text-shadow: 0 1px .25rem rgb(0, 36, 33);
+}
+</style>
+
+<style>
+.q-field--filled.q-field--highlighted .q-field__control::before,
+.q-field--filled .q-field__control::before {
+  background: rgb(255, 255, 255);
+  opacity: 1;
 }
 </style>
