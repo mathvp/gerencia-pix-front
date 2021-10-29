@@ -40,7 +40,7 @@
         </q-select>
       </div>
       <div class="q-mt-lg" v-if="selectedBank">
-        <q-input outlined v-model="pixKeyValue" :label="`Insira aqui sua Chave PIX do ${selectedBank.name}`" />
+        <q-input outlined ref="pixKeyInput" v-model="pixKeyValue" :label="`Insira aqui sua Chave PIX do ${selectedBank.name}`" />
       </div>
 
       <div class="q-my-lg q-gutter-lg">
@@ -82,6 +82,9 @@ export default {
     },
     blurSelectionField () {
       this.$refs.allBanksSelect.blur()
+      this.$nextTick(() => {
+        this.$refs.pixKeyInput.focus()
+      })
     },
     async getData () {
       const response = await BankService.getUserBanks()

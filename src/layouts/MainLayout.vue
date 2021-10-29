@@ -37,7 +37,39 @@
           :key="link.title"
           v-bind="link"
         />
+        <q-item
+          clickable
+          @click="confirmLogout = true"
+          exact
+        >
+          <q-item-section
+            side
+          >
+            <q-icon name="logout" color="primary" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Sair</q-item-label>
+            <q-item-label caption>
+              Logout
+            </q-item-label>
+          </q-item-section>
+        </q-item>
       </q-list>
+
+      <q-dialog v-model="confirmLogout">
+        <q-card>
+          <q-card-section class="row items-center">
+            <q-avatar icon="logout" color="primary" text-color="white" />
+            <span class="q-ml-sm">Tem certeza que deseja Sair?</span>
+          </q-card-section>
+
+          <q-card-actions align="right">
+            <q-btn flat label="Sim" color="primary" :to="{ name: 'logout' }" />
+            <q-btn flat label="Não" color="primary" v-close-popup />
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
     </q-drawer>
 
     <q-page-container>
@@ -51,6 +83,12 @@ import SideMenu from 'src/components/SideMenu.vue'
 
 const linksData = [
   {
+    title: 'Início',
+    caption: 'Voltar para tela inicial',
+    icon: 'home',
+    link: { name: 'index' }
+  },
+  {
     title: 'Cadastrar Banco',
     caption: 'Instituições Financeiras',
     icon: 'account_balance',
@@ -61,12 +99,6 @@ const linksData = [
     caption: 'Pix',
     icon: 'pix',
     link: { name: 'addPixKey' }
-  },
-  {
-    title: 'Sair',
-    caption: 'Logout',
-    icon: 'logout',
-    link: { name: 'logout' }
   }
 ]
 
@@ -76,7 +108,8 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
-      menuLinks: linksData
+      menuLinks: linksData,
+      confirmLogout: false
     }
   }
 }
