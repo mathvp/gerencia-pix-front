@@ -1,12 +1,15 @@
 import { axiosInstance } from 'boot/axios'
+import { LocalStorage } from 'quasar'
+
+const token = LocalStorage.getItem('token')
+
+const config = {
+  headers: { 'x-access-token': token }
+}
 
 export default {
   async getUserBanks (userId) {
-    const response = await axiosInstance.get(`/users/${userId}/banks`,
-      {
-        headers: {
-        }
-      }).then((res) => {
+    const response = await axiosInstance.get(`/users/${userId}/banks`, config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {
       return { status: error.response.status, message: error.response.data.error }
@@ -15,11 +18,7 @@ export default {
     return response
   },
   async getAllBanks () {
-    const response = await axiosInstance.get('/banks',
-      {
-        headers: {
-        }
-      }).then((res) => {
+    const response = await axiosInstance.get('/banks', config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {
       return { status: error.response.status, message: error.response.data.error }
@@ -31,9 +30,8 @@ export default {
     const response = await axiosInstance.post(`/users/${userId}/banks`,
       {
         ...bankData
-      }, {
-        headers: {}
-      }
+      },
+      config
     ).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {

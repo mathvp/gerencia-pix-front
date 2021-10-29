@@ -1,15 +1,37 @@
 <template>
   <q-card class="q-mb-sm bg-grey-2" flat bordered>
-    <q-item clickable v-ripple>
-      <q-item-section @click="copyPixKey(pixKeyData.value)">
-        <span class="text-caption">Chave {{pixKeyData.id}}:</span> <span class="text-bold text-body1 pix-key-value">{{pixKeyData.value}}</span>
+    <q-item :clickable="!editPix">
+      <q-item-section>
+        <span class="text-caption">Chave {{pixKeyData.id}}:</span>
+        <div class="row">
+          <div class="col-12">
+          <q-input
+            ref="pixVal"
+            class="text-bold text-body1 pix-key-value"
+            v-model="pixKeyValue"
+            :readonly="!editPix"
+            :filled="editPix"
+            :outlined="editPix"
+            @blur="() => { editPix = false}"
+            @click="copyPixKey(pixKeyData.value)"
+          />
+          </div>
+          <q-btn
+            color="primary"
+            icon="save"
+            label="Salvar"
+            class="q-my-sm"
+            v-if="editPix"
+            @click="updatePixKeyAction"
+          />
+        </div>
       </q-item-section>
       <q-item-section top side>
         <div class="text-grey-8 q-gutter-xs">
           <q-btn size="12px" class="copy-pix-key" @click="copyPixKey(pixKeyData.value)" flat dense round icon="content_copy" />
           <q-btn-dropdown flat dense round dropdown-icon="more_vert" >
             <q-list>
-              <q-item clickable @click="onItemClick">
+              <q-item clickable @click="editAction">
                 <q-item-section side>
                   <q-icon color="primary" name="edit" />
                 </q-item-section>
@@ -18,7 +40,7 @@
                 </q-item-section>
               </q-item>
 
-              <q-item clickable v-close-popup @click="onItemClick">
+              <q-item clickable v-close-popup @click="deleteAction">
                 <q-item-section side>
                   <q-icon color="negative" name="delete" />
                 </q-item-section>
@@ -52,8 +74,18 @@ export default {
       }
     }
   },
+  data () {
+    return {
+      pixKeyValue: this.pixKeyData.value,
+      editPix: false
+    }
+  },
   methods: {
     copyPixKey (keyValue) {
+      if (this.editPix) {
+        return
+      }
+
       copyToClipboard(keyValue)
         .then(() => {
           this.showNotificationMsg('Chave copiada com sucesso!', 'positive')
@@ -70,8 +102,20 @@ export default {
         color
       })
     },
-    onItemClick () {
-      console.log('Clicked on an Item', this.pixKeyData.value)
+    editAction () {
+      this.editPix = true
+      this.$refs.pixVal.focus()
+    },
+    updatePixKeyAction () {
+      this.$emit('update-item', {
+        id: this.pixKeyData.id,
+        newValue: this.pixKeyValue
+      })
+
+      this.editPix = false
+    },
+    deleteAction () {
+      this.$emit('delete-item', this.pixKeyData)
     }
   }
 }
