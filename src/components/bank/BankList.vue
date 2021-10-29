@@ -22,8 +22,7 @@ export default {
   },
   methods: {
     async getBankData () {
-      const userId = 1
-      const response = await BankService.getUserBanks(userId)
+      const response = await BankService.getUserBanks()
       this.myBanksList = response.data
     }
   },

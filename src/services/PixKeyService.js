@@ -8,7 +8,7 @@ const config = {
 }
 
 export default {
-  async savePixKey (userId, bankData) {
+  async savePixKey (bankData) {
     const response = await axiosInstance.post(`/users/banks/${bankData.code}/pix-keys`,
       {
         value: bankData.value
@@ -23,7 +23,7 @@ export default {
 
     return response
   },
-  async updatePixKey (userId, bankCode, pixKeyData) {
+  async updatePixKey (bankCode, pixKeyData) {
     const response = await axiosInstance.put(`/users/banks/${bankCode}/${pixKeyData.id}`,
       {
         value: pixKeyData.newValue
@@ -36,7 +36,7 @@ export default {
 
     return response
   },
-  async deletePixKey (userId, bankCode, pixKeyId) {
+  async deletePixKey (bankCode, pixKeyId) {
     const response = await axiosInstance.delete(`/users/banks/${bankCode}/${pixKeyId}`, config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {

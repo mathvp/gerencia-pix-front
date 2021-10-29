@@ -1,6 +1,5 @@
 export default {
-  getUserBanks (userId) {
-    console.log(userId)
+  getUserBanks () {
     return Promise.resolve({ data: {} })
   }
 }

@@ -99,8 +99,7 @@ export default {
     },
 
     async updatePixKey (keyData) {
-      const userId = 1
-      const pixKeyUpdated = await PixKeyService.updatePixKey(userId, this.localBankData.code, keyData)
+      const pixKeyUpdated = await PixKeyService.updatePixKey(this.localBankData.code, keyData)
 
       if (typeof pixKeyUpdated.status !== 'undefined' && pixKeyUpdated.status === 200) {
         const pixKeyIndex = this.localBankData.pix_keys.findIndex(pix => pix.id === keyData.id)
@@ -119,8 +118,7 @@ export default {
     },
 
     async performDelete () {
-      const userId = 1
-      const pixKeyDeleted = await PixKeyService.deletePixKey(userId, this.localBankData.code, this.currentPixKey.id)
+      const pixKeyDeleted = await PixKeyService.deletePixKey(this.localBankData.code, this.currentPixKey.id)
 
       if (typeof pixKeyDeleted.status !== 'undefined' && pixKeyDeleted.status === 200) {
         this.localBankData.pix_keys = this.localBankData.pix_keys.filter(pixKey => pixKey.id !== this.currentPixKey.id)

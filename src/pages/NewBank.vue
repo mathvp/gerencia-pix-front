@@ -148,7 +148,6 @@ export default {
       }
     },
     async save () {
-      const userId = 1
       const bankCode = this.selectedBank.code
 
       const notif = this.$q.notify({
@@ -159,7 +158,7 @@ export default {
 
       this.selectedBank = null
 
-      await BankService.saveBank(userId, {
+      await BankService.saveBank({
         code: bankCode,
         custom_bank_name: this.customBankData.name,
         custom_bank_color: this.customBankData.color,

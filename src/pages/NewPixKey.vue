@@ -84,12 +84,10 @@ export default {
       this.$refs.allBanksSelect.blur()
     },
     async getData () {
-      const userId = 1
-      const response = await BankService.getUserBanks(userId)
+      const response = await BankService.getUserBanks()
       return response.data
     },
     async save () {
-      const userId = 1
       const bankCode = this.selectedBank.code
 
       const notif = this.$q.notify({
@@ -100,7 +98,7 @@ export default {
 
       this.selectedBank = null
 
-      await PixKeyService.savePixKey(userId, {
+      await PixKeyService.savePixKey({
         code: bankCode,
         value: this.pixKeyValue
       }).then(() => {

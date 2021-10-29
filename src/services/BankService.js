@@ -8,7 +8,7 @@ const config = {
 }
 
 export default {
-  async getUserBanks (userId) {
+  async getUserBanks () {
     const response = await axiosInstance.get('/users/banks', config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {
@@ -26,7 +26,7 @@ export default {
 
     return response
   },
-  async saveBank (userId, bankData) {
+  async saveBank (bankData) {
     const response = await axiosInstance.post('/users/banks',
       {
         ...bankData
