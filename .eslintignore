@@ -7,3 +7,5 @@
 /test
 
 .eslintrc.js
+jsconfig.json
+jest.config.js

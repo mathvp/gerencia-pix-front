@@ -85,6 +85,9 @@ export default {
     }
   },
   methods: {
+    setInitialValue () {
+      this.localBankData = this.bankData
+    },
     keysCountText () {
       const keysQtd = this.localBankData.pix_keys ? this.localBankData.pix_keys.length : 0
 
@@ -147,7 +150,7 @@ export default {
     }
   },
   created () {
-    this.localBankData = this.bankData
+    this.setInitialValue()
   }
 }
 </script>

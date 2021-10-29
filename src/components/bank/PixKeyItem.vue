@@ -76,11 +76,14 @@ export default {
   },
   data () {
     return {
-      pixKeyValue: this.pixKeyData.value,
+      pixKeyValue: '',
       editPix: false
     }
   },
   methods: {
+    setInitialValue () {
+      this.pixKeyValue = this.$props.pixKeyData.value
+    },
     copyPixKey (keyValue) {
       if (this.editPix) {
         return
@@ -117,6 +120,9 @@ export default {
     deleteAction () {
       this.$emit('delete-item', this.pixKeyData)
     }
+  },
+  created () {
+    this.setInitialValue()
   }
 }
 </script>

@@ -1,8 +1,23 @@
-import { mountQuasar } from '@quasar/quasar-app-extension-testing-unit-jest'
-import BankItem from '../../../src/components/bank/BankItem'
+import { mount, createLocalVue, shallowMount } from '@vue/test-utils';
+import * as All from 'quasar';
 import Vue from 'vue'
 
+jest.mock("../../../src/services/PixKeyService", () => require("./__mock__/PixKeyService"));
+
+import BankItem from '../../../src/components/bank/BankItem';
+
+
+const { Quasar } = All;
+
 Vue.config.silent = true
+
+const components = Object.keys(All).reduce((object, key) => {
+  const val = All[key];
+  if (val && val.component && val.component.name != null) {
+    object[key] = val;
+  }
+  return object;
+}, {});
 
 const bankDataObject = {
   code: 260,
@@ -23,37 +38,36 @@ const bankDataObject = {
   ]
 }
 
-describe('BankItem Component', () => {
-  it('mounts without errors', () => {
-    const wrapper = mountQuasar(BankItem, {
-      quasar: {
-        components: {
-        }
-      },
-      propsData: {
-        bankData: { }
-      }
-    })
+describe('Mount Quasar', () => {
+  const localVue = createLocalVue();
+  localVue.use(Quasar, { components }); // , lang: langEn
 
-    expect(wrapper).toBeTruthy()
-  }),
+  const wrapper = mount(BankItem, {
+    localVue
+  });
+  const vm = wrapper.vm;
+
+  it('has a created hook', () => {
+    expect(typeof vm.keysCountText).toBe('function')
+  })
+
+  it('accesses the shallowMount', () => {
+    expect(wrapper.text()).toContain('Chave')
+  });
+
+  it('sets the correct default data', () => {
+    const defaultData = BankItem.data();
+    const empty = {}
+    expect(defaultData.localBankData).toEqual(empty);
+  });
 
   it('should show Pix Key counter message if 1 Pix Key present', async () => {
-    const wrapper = mountQuasar(BankItem)
     await wrapper.setProps({ bankData: bankDataObject })
 
-    expect(wrapper.find('.keys-counter').text()).toEqual('1 Chave cadastrada')
-  }),
-
-  it('should show pluralized Pix Key counter message if more Pix Keys present', async () => {
-    const wrapper = mountQuasar(BankItem)
-    const pixKeys = [
-      { bank_code: 260, id: 1, user_id: 1, value: '123456789' },
-      { bank_code: 260, id: 2, user_id: 1, value: '987654321' }
-    ]
-    bankDataObject.pix_keys = pixKeys
-    await wrapper.setProps({ bankData: bankDataObject })
-
-    expect(wrapper.find('.keys-counter').text()).toEqual('2 Chaves cadastradas')
+    wrapper.vm.setInitialValue();
+    wrapper.vm.$nextTick(() => {
+      expect(wrapper.vm.done).toBe(true);
+      expect(wrapper.find('.keys-counter').text()).toEqual('1 Chave cadastrada')
+    });
   })
-})
+});

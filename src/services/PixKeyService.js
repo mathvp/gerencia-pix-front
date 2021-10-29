@@ -1,4 +1,4 @@
-import { axiosInstance } from 'boot/axios'
+import { axiosInstance } from '../boot/axios'
 import { LocalStorage } from 'quasar'
 
 const token = LocalStorage.getItem('token')
@@ -9,7 +9,7 @@ const config = {
 
 export default {
   async savePixKey (userId, bankData) {
-    const response = await axiosInstance.post(`/users/${userId}/banks/${bankData.code}/pix-keys`,
+    const response = await axiosInstance.post(`/users/banks/${bankData.code}/pix-keys`,
       {
         value: bankData.value
       },
@@ -24,7 +24,7 @@ export default {
     return response
   },
   async updatePixKey (userId, bankCode, pixKeyData) {
-    const response = await axiosInstance.put(`/users/${userId}/banks/${bankCode}/${pixKeyData.id}`,
+    const response = await axiosInstance.put(`/users/banks/${bankCode}/${pixKeyData.id}`,
       {
         value: pixKeyData.newValue
       }, config).then((res) => {
@@ -37,7 +37,7 @@ export default {
     return response
   },
   async deletePixKey (userId, bankCode, pixKeyId) {
-    const response = await axiosInstance.delete(`/users/${userId}/banks/${bankCode}/${pixKeyId}`, config).then((res) => {
+    const response = await axiosInstance.delete(`/users/banks/${bankCode}/${pixKeyId}`, config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {
       console.log('Erro', error)
