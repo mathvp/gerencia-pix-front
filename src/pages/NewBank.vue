@@ -162,7 +162,8 @@ export default {
         code: bankCode,
         custom_bank_name: this.customBankData.name,
         custom_bank_color: this.customBankData.color,
-        custom_bank_image_url: this.customBankData.image
+        custom_bank_image_url: this.customBankData.image,
+        custom_bank_order: 9999
       }).then(() => {
         notif({
           type: 'positive',

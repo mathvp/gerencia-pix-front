@@ -12,6 +12,9 @@ export default {
     const response = await axiosInstance.get('/users/banks', config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {
+      if (typeof error.status === 'undefined') {
+        return { status: 500, message: 'Não foi possível obter os dados...' }
+      }
       return { status: error.response.status, message: error.response.data.error }
     })
 
@@ -36,6 +39,24 @@ export default {
       return { status: res.status, data: res.data }
     }).catch((error) => {
       console.log('Erro', error)
+      return { status: error.response.status, message: error.response.data.error }
+    })
+
+    return response
+  },
+  async sortOrder (newOrders) {
+    const response = await axiosInstance.put('/users/banks',
+      {
+        newOrders
+      },
+      config
+    ).then((res) => {
+      return { status: res.status, data: res.data }
+    }).catch((error) => {
+      console.log('Erro', error)
+      if (typeof error.status === 'undefined') {
+        return { status: 500, message: 'Não foi possível atualizar' }
+      }
       return { status: error.response.status, message: error.response.data.error }
     })
 

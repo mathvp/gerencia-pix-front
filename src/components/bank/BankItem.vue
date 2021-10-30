@@ -1,60 +1,64 @@
 <template>
-  <q-expansion-item>
-    <template v-slot:header>
-      <q-item-section avatar class="q-py-sm">
-        <q-avatar class="bankAvatar text-bold" rounded :style="avatarBackground" text-color="white" size="60px">
-          <span v-if="!localBankData.image">{{ logoImage }}</span>
-          <img v-if="localBankData.image" :src="localBankData.image">
-        </q-avatar>
-      </q-item-section>
+  <Draggable>
+    <q-expansion-item>
+      <template v-slot:header>
+        <q-item-section avatar class="q-py-sm">
+          <q-avatar class="bankAvatar text-bold" rounded :style="avatarBackground" text-color="white" size="60px">
+            <span v-if="!localBankData.image">{{ logoImage }}</span>
+            <img v-if="localBankData.image" :src="localBankData.image">
+          </q-avatar>
+        </q-item-section>
 
-      <q-item-section>
-        <q-item-label lines="1" class="text-bold text-h6">{{ localBankData.name }}</q-item-label>
-        <q-item-label class="keys-counter" caption lines="1">{{ keysCountText() }}</q-item-label>
-      </q-item-section>
-    </template>
+        <q-item-section>
+          <q-item-label lines="1" class="text-bold text-h6">{{ localBankData.name }}</q-item-label>
+          <q-item-label class="keys-counter" caption lines="1">{{ keysCountText() }}</q-item-label>
+        </q-item-section>
+      </template>
 
-    <q-card class="q-mb-lg">
-      <q-card-section>
-        <p class="text-grey-8 text-caption" v-if="localBankData.pix_keys">Clique sobre a Chave para copiar</p>
-          <pix-key-item @update-item="updatePixKey" @delete-item="deletePixKeyDialog" v-for="pixKey in localBankData.pix_keys" :key="pixKey.id" :pixKeyData="pixKey" />
-      </q-card-section>
-    </q-card>
-
-    <q-dialog v-model="showDeleteDialog" persistent>
-      <q-card class="q-pa-md">
-        <q-card-section class="row q-gutter-md">
-          <div class="col-12 col-md-1 q-mr-md">
-            <q-avatar icon="warning" color="warning" text-color="white" />
-          </div>
-          <div class="col-12 col-md-9">
-            <p>Tem certeza que deseja excluir a Chave Pix <span class="text-bold">{{currentPixKey.value}}</span>?</p>
-            <p>OBS.: Essa ação não pode ser desfeita</p>
-          </div>
+      <q-card class="q-mb-lg">
+        <q-card-section>
+          <p class="text-grey-8 text-caption" v-if="localBankData.pix_keys">Clique sobre a Chave para copiar</p>
+            <pix-key-item @update-item="updatePixKey" @delete-item="deletePixKeyDialog" v-for="pixKey in localBankData.pix_keys" :key="pixKey.id" :pixKeyData="pixKey" />
         </q-card-section>
-
-        <q-card-actions class="row q-gutter-md">
-          <div class="col-12 col-md-3">
-          <q-btn label="Voltar" color="primary" class="q-px-lg" v-close-popup />
-          </div>
-          <div class="col-12 col-md-8">
-          <q-btn @click="performDelete" label="Sim, quero excluir esta Chave" color="red-6" v-close-popup />
-          </div>
-        </q-card-actions>
       </q-card>
-    </q-dialog>
 
-  </q-expansion-item>
+      <q-dialog v-model="showDeleteDialog" persistent>
+        <q-card class="q-pa-md">
+          <q-card-section class="row q-gutter-md">
+            <div class="col-12 col-md-1 q-mr-md">
+              <q-avatar icon="warning" color="warning" text-color="white" />
+            </div>
+            <div class="col-12 col-md-9">
+              <p>Tem certeza que deseja excluir a Chave Pix <span class="text-bold">{{currentPixKey.value}}</span>?</p>
+              <p>OBS.: Essa ação não pode ser desfeita</p>
+            </div>
+          </q-card-section>
+
+          <q-card-actions class="row q-gutter-md">
+            <div class="col-12 col-md-3">
+            <q-btn label="Voltar" color="primary" class="q-px-lg" v-close-popup />
+            </div>
+            <div class="col-12 col-md-8">
+            <q-btn @click="performDelete" label="Sim, quero excluir esta Chave" color="red-6" v-close-popup />
+            </div>
+          </q-card-actions>
+        </q-card>
+      </q-dialog>
+
+    </q-expansion-item>
+  </Draggable>
 </template>
 
 <script>
 import PixKeyItem from './PixKeyItem'
 import PixKeyService from '../../services/PixKeyService'
+import { Draggable } from 'vue-smooth-dnd'
 
 export default {
   name: 'BankItem',
   components: {
-    'pix-key-item': PixKeyItem
+    'pix-key-item': PixKeyItem,
+    Draggable
   },
   data () {
     return {

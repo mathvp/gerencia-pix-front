@@ -20,7 +20,9 @@
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
-    "quasar": "^1.0.0"
+    "quasar": "^1.0.0",
+    "vue-smooth-dnd": "^0.8.1",
+    "vuedraggable": "^2.24.3"
   },
   "devDependencies": {
     "@quasar/app": "^2.0.0",
@@ -30,11 +32,11 @@
     "eslint": "^7.21.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jest": "^24.1.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-vue": "^7.7.0",
-    "eslint-webpack-plugin": "^2.4.0",
-    "eslint-plugin-jest": "^24.1.0"
+    "eslint-webpack-plugin": "^2.4.0"
   },
   "browserslist": [
     "last 10 Chrome versions",
