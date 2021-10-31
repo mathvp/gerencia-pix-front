@@ -8,8 +8,8 @@ const config = {
 }
 
 export default {
-  async getUserBanks () {
-    const response = await axiosInstance.get('/users/banks', config).then((res) => {
+  async getUserBanks (bankCode = '') {
+    const response = await axiosInstance.get(`/users/banks/${bankCode}`, config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {
       if (typeof error.status === 'undefined') {
@@ -24,6 +24,18 @@ export default {
     const response = await axiosInstance.get('/banks', config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {
+      return { status: error.response.status, message: error.response.data.error }
+    })
+
+    return response
+  },
+  async getCustomBank (bankCode) {
+    const response = await axiosInstance.get(`users/banks/${bankCode}/custom`, config).then((res) => {
+      return { status: res.status, data: res.data }
+    }).catch((error) => {
+      if (typeof error.status === 'undefined') {
+        return { status: 500, message: 'Não foi possível obter os dados...' }
+      }
       return { status: error.response.status, message: error.response.data.error }
     })
 
@@ -57,6 +69,31 @@ export default {
       if (typeof error.status === 'undefined') {
         return { status: 500, message: 'Não foi possível atualizar' }
       }
+      return { status: error.response.status, message: error.response.data.error }
+    })
+
+    return response
+  },
+  async updateBank (bankData) {
+    const response = await axiosInstance.put(`/users/banks/${bankData.code}`,
+      {
+        ...bankData
+      },
+      config
+    ).then((res) => {
+      return { status: res.status, data: res.data }
+    }).catch((error) => {
+      console.log('Erro', error)
+      return { status: error.response.status, message: error.response.data.error }
+    })
+
+    return response
+  },
+  async deleteBank (bankCode) {
+    const response = await axiosInstance.delete(`/users/banks/${bankCode}`, config).then((res) => {
+      return { status: res.status, data: res.data }
+    }).catch((error) => {
+      console.log('Erro', error)
       return { status: error.response.status, message: error.response.data.error }
     })
 

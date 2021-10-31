@@ -6,6 +6,7 @@ const routes = [
     children: [
       { path: '', component: () => import('pages/Index.vue'), name: 'index' },
       { path: 'novo-banco', component: () => import('pages/NewBank.vue'), name: 'addBank' },
+      { path: 'editar-banco/:bank_code', component: () => import('pages/EditBank.vue'), name: 'editBank' },
       { path: 'nova-chave', component: () => import('pages/NewPixKey.vue'), name: 'addPixKey' }
     ]
   },

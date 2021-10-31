@@ -13,6 +13,31 @@
           <q-item-label lines="1" class="text-bold text-h6">{{ localBankData.name }}</q-item-label>
           <q-item-label class="keys-counter" caption lines="1">{{ keysCountText() }}</q-item-label>
         </q-item-section>
+        <q-item-section side>
+          <q-btn-dropdown flat dense round dropdown-icon="more_vert" >
+            <q-list>
+              <q-item clickable :to="{ name: 'editBank', params: { bank_code: localBankData.code } }">
+                <q-item-section side>
+                  <q-icon color="primary" name="edit" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-primary" >
+                    Editar Banco
+                  </q-item-label>
+                </q-item-section>
+              </q-item>
+
+              <q-item clickable v-close-popup @click="deleteBankDialog">
+                <q-item-section side>
+                  <q-icon color="negative" name="delete" />
+                </q-item-section>
+                <q-item-section>
+                  <q-item-label class="text-negative">Excluir Banco</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-list>
+          </q-btn-dropdown>
+        </q-item-section>
       </template>
 
       <q-card class="q-mb-lg">
@@ -29,7 +54,7 @@
               <q-avatar icon="warning" color="warning" text-color="white" />
             </div>
             <div class="col-12 col-md-9">
-              <p>Tem certeza que deseja excluir a Chave Pix <span class="text-bold">{{currentPixKey.value}}</span>?</p>
+              <p>{{deleteMessage}}</p>
               <p>OBS.: Essa ação não pode ser desfeita</p>
             </div>
           </q-card-section>
@@ -39,7 +64,8 @@
             <q-btn label="Voltar" color="primary" class="q-px-lg" v-close-popup />
             </div>
             <div class="col-12 col-md-8">
-            <q-btn @click="performDelete" label="Sim, quero excluir esta Chave" color="red-6" v-close-popup />
+            <q-btn v-if="deleteType === 'pix'" @click="performDeletePix" label="Sim, quero excluir esta Chave" color="red-6" v-close-popup />
+            <q-btn v-if="deleteType === 'bank'" @click="performDeleteBank" label="Sim, quero excluir este Banco" color="red-6" v-close-popup />
             </div>
           </q-card-actions>
         </q-card>
@@ -53,6 +79,7 @@
 import PixKeyItem from './PixKeyItem'
 import PixKeyService from '../../services/PixKeyService'
 import { Draggable } from 'vue-smooth-dnd'
+import BankService from 'src/services/BankService'
 
 export default {
   name: 'BankItem',
@@ -65,7 +92,9 @@ export default {
       showDeleteDialog: false,
       showUpdateDialog: false,
       currentPixKey: {},
-      localBankData: {}
+      localBankData: {},
+      deleteMessage: '',
+      deleteType: null
     }
   },
   props: {
@@ -89,7 +118,7 @@ export default {
     }
   },
   methods: {
-    setInitialValue () {
+    async setInitialValue () {
       this.localBankData = this.bankData
     },
     keysCountText () {
@@ -118,10 +147,18 @@ export default {
 
     deletePixKeyDialog (keyData) {
       this.currentPixKey = keyData
+      this.deleteMessage = `Tem certeza que deseja excluir a Chave Pix ${this.currentPixKey.value}?`
+      this.deleteType = 'pix'
       this.showDeleteDialog = true
     },
 
-    async performDelete () {
+    deleteBankDialog () {
+      this.deleteMessage = `Tem certeza que deseja excluir o Banco ${this.localBankData.name} e todas as Chaves Pix associadas?`
+      this.deleteType = 'bank'
+      this.showDeleteDialog = true
+    },
+
+    async performDeletePix () {
       const pixKeyDeleted = await PixKeyService.deletePixKey(this.localBankData.code, this.currentPixKey.id)
 
       if (typeof pixKeyDeleted.status !== 'undefined' && pixKeyDeleted.status === 200) {
@@ -132,6 +169,16 @@ export default {
       }
     },
 
+    async performDeleteBank () {
+      const bankDeleted = await BankService.deleteBank(this.localBankData.code)
+
+      if (typeof bankDeleted.status !== 'undefined' && bankDeleted.status === 200) {
+        this.showNotificationMsg(bankDeleted.data.msg, 'positive')
+      } else {
+        this.showNotificationMsg('Erro ao excluir o Banco...', 'negative')
+      }
+    },
+
     showNotificationMsg (message, color) {
       this.$q.notify({
         position: 'top',
@@ -139,6 +186,9 @@ export default {
         message,
         color
       })
+    },
+    test () {
+      console.log('OK!!!')
     }
   },
   computed: {
@@ -151,8 +201,8 @@ export default {
       return `background-color: ${this.avatarColor}`
     }
   },
-  created () {
-    this.setInitialValue()
+  async created () {
+    await this.setInitialValue()
   }
 }
 </script>
