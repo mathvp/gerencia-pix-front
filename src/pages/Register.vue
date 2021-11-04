@@ -24,6 +24,7 @@
             <q-form
               @submit="onSubmit"
               class="q-my-md"
+              ref="register-form"
             >
               <q-input
                 filled
@@ -53,38 +54,57 @@
                 class="full-width q-mb-lg"
                 color="primary"
                 v-model="email"
+                type="email"
                 label="Email"
                 hint="Um email válido"
                 lazy-rules
-                :rules="[ val => val && val.length > 0 || 'Informe seu email']"
+                :rules="[
+                  val => val && val.length > 0 || 'Informe seu email',
+                  val => validateEmail(val) || 'Informe um email válido'
+                ]"
               />
 
               <q-input
                 filled
                 square
                 class="full-width q-mb-lg"
-                type="password"
+                :type="isPwd ? 'password' : 'text'"
                 v-model="password"
                 label="Senha"
                 hint="No mínimo 6 caracteres"
                 lazy-rules
                 :rules="[
-                  val => val !== null && val !== '' || 'Informe sua senha'
+                  val => val !== null && val !== '' || 'Informe sua senha',
+                  val => val.length >= 6 || 'A senha deve conter 6 ou mais caracteres',
                 ]"
-              />
+              >
+                    <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+              </q-input>
               <q-input
                 filled
                 square
                 class="full-width q-mb-lg"
-                type="password"
+                :type="isPwd ? 'password' : 'text'"
                 v-model="passwordCopy"
                 label="Repita a Senha"
                 hint="A mesma que o campo anterior"
                 lazy-rules
-                :rules="[
-                  val => val !== null && val !== '' || 'Informe sua senha'
-                ]"
-              />
+                :rules="[ val => validatePass(val) || 'As senhas não conferem' ]"
+              >
+                    <template v-slot:append>
+                    <q-icon
+                      :name="isPwd ? 'visibility_off' : 'visibility'"
+                      class="cursor-pointer"
+                      @click="isPwd = !isPwd"
+                    />
+                  </template>
+              </q-input>
               <q-btn
                 size="lg"
                 label="Cadastrar"
@@ -105,18 +125,26 @@
       </div>
     </div>
 
-    <q-dialog v-model="registerComplete" persistent>
+    <q-dialog v-model="formSent">
       <q-card>
         <q-card-section>
-          <div class="text-h6">{{registerTitle}}</div>
+          <div class="text-h6">{{responseTitle}}</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          {{registerMessage}}
+          {{responseMessage}}
+        </q-card-section>
+
+        <q-card-section v-if="responseErrors.length" class="q-pt-none">
+          <div v-for="(error, index) in responseErrors" :key="index">{{error}}</div>
+        </q-card-section>
+
+        <q-card-section v-if="!responseErrors.length" class="q-pt-none">
+          Aguarde {{counter}}...
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="OK" :to="{ name: redirectUrl }" color="primary" v-close-popup />
+          <q-btn v-if="responseErrors.length" label="OK" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -125,7 +153,7 @@
 </template>
 
 <script>
-// import AccountService from '../services/AccountService'
+import AccountService from '../services/AccountService'
 
 export default {
   data () {
@@ -134,36 +162,76 @@ export default {
       last_name: null,
       email: null,
       password: null,
-      registerComplete: false,
-      registerMessage: '',
-      registerTitle: '',
-      redirectUrl: null
+      passwordCopy: null,
+      isPwd: true,
+      responseTitle: '',
+      responseMessage: '',
+      responseErrors: [],
+      counter: 5,
+      formSent: false
     }
   },
 
   methods: {
-    onSubmit () {
-      this.register().then((res) => {
-        if (res.status === 200 || res.status === 201) {
-          this.registerTitle = 'Cadastro concluído'
-          this.registerMessage = 'Cadastro efetuado com sucesso! Utilize seu email e senha para fazer Login'
-          this.redirectUrl = 'login'
-          this.registerComplete = true
+    validatePass (password) {
+      return password === this.password
+    },
+    validateEmail (mail) {
+      return /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(mail)
+    },
+    async onSubmit (event) {
+      event.preventDefault()
+      const valid = await this.$refs['register-form'].validate()
+
+      if (valid) {
+        this.responseTitle = ''
+        this.responseMessage = ''
+        this.responseErrors = []
+        this.sendForm()
+      }
+    },
+    async sendForm () {
+      const response = await AccountService.register({
+        first_name: this.first_name,
+        last_name: this.last_name,
+        email: this.email,
+        password: this.password
+      }).then((res) => {
+        if (res.status === 200) {
+          this.responseTitle = 'Tudo certo!'
+          this.responseMessage = 'Sua conta foi criada com sucesso! Iremos te redirecionar para o Login'
+          return true
         }
 
-        this.registerTitle = 'Erro'
-        this.registerMessage = res.message
-        this.registerComplete = true
+        this.responseTitle = 'Erro'
+        this.responseMessage = (this.responseErrors.length === 1) ? 'Houve um erro ao tentar criar a conta:' : 'Houveram erros ao tentar criar a conta:'
+        this.responseErrors.push(res.message)
+
+        return false
+      }).catch((err) => {
+        this.responseTitle = 'Erro'
+        this.responseMessage = 'Houve um erro ao criar a conta'
+        this.responseErrors.push('Tente novamente')
+        console.log(err)
+
+        return false
+      }).finally(() => {
+        this.formSent = true
       })
+
+      if (response) {
+        this.redirect(5)
+      }
     },
-    async register () {
-      return true
-      // return await AccountService.register({
-      //   first_name: this.first_name,
-      //   last_name: this.last_name,
-      //   email: this.email,
-      //   password: this.password
-      // })
+    redirect (time) {
+      this.counter = time
+      const timer = setInterval(() => {
+        if (this.counter === 1) {
+          clearInterval(timer)
+          this.$router.push({ name: 'login' })
+        }
+        this.counter -= 1
+      }, 1000)
     }
   }
 }
