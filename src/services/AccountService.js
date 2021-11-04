@@ -49,10 +49,23 @@ export default {
 
     return response
   },
-  isLoggedIn () {
-    if (LocalStorage.has('token') && (LocalStorage.getItem('token') !== null) && LocalStorage.has('id') && (LocalStorage.getItem('id') !== null)) {
+  async isLoggedIn () {
+    if (LocalStorage.has('token') && (LocalStorage.getItem('token') !== null) && await this.checkToken()) {
       return true
     }
     return false
+  },
+  async checkToken () {
+    const token = LocalStorage.getItem('token')
+    const response = await axiosInstance.get('/users/verify-token', {
+      headers: { 'x-access-token': token }
+    }).then((res) => {
+      return true
+    }).catch((error) => {
+      console.log(error)
+      return false
+    })
+
+    return response
   }
 }

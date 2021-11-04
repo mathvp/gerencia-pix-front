@@ -136,6 +136,9 @@ export default {
     },
     async getData () {
       const response = await BankService.getAllBanks()
+      if (response.status === 401) {
+        this.$router.push({ name: 'login', params: { msg: '1' } })
+      }
       return response.data
     },
     updateBankName () {
@@ -173,13 +176,15 @@ export default {
         notif({
           type: 'positive',
           message: 'Banco salvo com sucesso!',
-          position: 'center'
+          position: 'center',
+          timeout: 3000
         })
       }).catch(() => {
         notif({
           type: 'negative',
           message: 'Houve um erro ao salvar os dados...',
-          position: 'center'
+          position: 'center',
+          timeout: 3000
         })
       })
     }

@@ -93,6 +93,9 @@ export default {
     },
     async getData () {
       const response = await BankService.getUserBanks()
+      if (response.status === 401) {
+        this.$router.push({ name: 'login', params: { msg: '1' } })
+      }
       return response.data
     },
     async save () {

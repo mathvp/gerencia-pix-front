@@ -28,14 +28,15 @@ export default function (/* { store, ssrContext } */) {
     base: process.env.VUE_ROUTER_BASE
   })
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
     if (to.name === 'login') {
       next() // login route is always  okay (we could use the requires auth flag below). prevent a redirect loop
     } else if (to.meta && to.meta.requiresAuth === false) {
       next() // requires auth is explicitly set to false
-    } else if (AccountService.isLoggedIn()) {
+    } else if (await AccountService.isLoggedIn()) {
       next() // i'm logged in. carry on
     } else {
+      await AccountService.logout()
       next({ name: 'login', params: { msg: '1' } }) // always put your redirect as the default case
     }
   })
