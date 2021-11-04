@@ -66,6 +66,11 @@ export default {
   },
   methods: {
     filterFn (val, update, abort) {
+      if (typeof this.allBanksList === 'undefined') {
+        this.allBanksOptions = []
+        return
+      }
+
       if (val.length < 2) {
         update(() => {
           this.myBanksOptions = this.allBanksList
