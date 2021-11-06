@@ -90,9 +90,12 @@ export default {
 
   methods: {
     onSubmit () {
-      this.login().then((res) => {
+      this.showLoading()
+
+      this.login().then(async (res) => {
         if (res.status === 200 || res.status === 201) {
-          this.$router.push({ name: 'index' })
+          await this.$router.push({ name: 'index' })
+          return
         }
         this.errorMessage = res.message
         this.loginError = true
@@ -100,6 +103,11 @@ export default {
     },
     async login () {
       return await AccountService.login(this.email, this.password)
+    },
+    showLoading () {
+      this.$q.loading.show({
+        message: 'Verificando suas credenciais... Aguarde...'
+      })
     }
   },
   mounted () {
@@ -111,6 +119,9 @@ export default {
         message: this.messages[showMessage - 1]
       })
     }
+  },
+  beforeDestroy () {
+    this.$q.loading.hide()
   }
 }
 </script>
