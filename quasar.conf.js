@@ -106,7 +106,7 @@ module.exports = function (/* ctx */) {
 
     // animations: 'all', // --- includes all animations
     // https://v1.quasar.dev/options/animations
-    animations: [],
+    animations: ['slideInRight', 'slideOutLeft'],
 
     // https://v1.quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
@@ -124,7 +124,7 @@ module.exports = function (/* ctx */) {
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
-        theme_color: '#027be3',
+        theme_color: '#009e8c',
         icons: [
           {
             src: 'icons/icon-128x128.png',
