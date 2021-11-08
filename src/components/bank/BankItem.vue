@@ -178,6 +178,7 @@ export default {
 
       if (typeof bankDeleted.status !== 'undefined' && bankDeleted.status === 200) {
         this.showNotificationMsg(bankDeleted.data.msg, 'positive')
+        this.$emit('delete-bank', this.localBankData.code)
       } else {
         this.showNotificationMsg('Erro ao excluir o Banco...', 'negative')
       }

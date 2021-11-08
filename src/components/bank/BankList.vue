@@ -18,7 +18,7 @@
         :drop-placeholder="upperDropPlaceholderOptions"
         drag-class="card-ghost"
         drop-class="card-ghost-drop">
-          <bank-item v-for="bank in myBanksList" :key="bank.code" :bankData="bank" :avatarColor="bank.color" />
+          <bank-item v-for="bank in myBanksList" :key="bank.code" :bankData="bank" :avatarColor="bank.color" @delete-bank="filterBankList"/>
       </Container>
     </q-list>
   </div>
@@ -78,6 +78,9 @@ export default {
       if (sort.status !== 200) {
         this.myBanksList = oldList
       }
+    },
+    filterBankList (bankCode) {
+      this.myBanksList = this.myBanksList.filter(bank => bank.code !== bankCode)
     }
   },
   created () {
