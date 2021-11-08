@@ -28,6 +28,7 @@
               filled
               square
               class="full-width q-mt-sm"
+              ref="passwordField"
               :type="isPwd ? 'password' : 'text'"
               v-model="password"
               label="Senha"
@@ -40,7 +41,7 @@
                 <q-icon
                   :name="isPwd ? 'visibility_off' : 'visibility'"
                   class="cursor-pointer"
-                  @click="isPwd = !isPwd"
+                  @click="togglePassword"
                 />
               </template>
             </q-input>
@@ -124,6 +125,10 @@ export default {
     },
     emailFocused () {
       this.myNotify()
+    },
+    togglePassword () {
+      this.isPwd = !this.isPwd
+      this.$refs.passwordField.focus()
     }
   },
   mounted () {
