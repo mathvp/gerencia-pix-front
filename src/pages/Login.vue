@@ -3,7 +3,7 @@
     <div class="column items-center">
       <div class="col column items-center">
         <img src="../assets/pix-logo.png" class="pix-logo" alt="Gerencia PIX">
-        <div class="text-h3 text-bold text-white q-my-xl">
+        <div class="text-h3 text-bold text-white q-my-xl app-name">
           Gerencia PIX
         </div>
         <div class="form-wrapper">
@@ -17,6 +17,8 @@
               class="full-width"
               color="primary"
               v-model="email"
+              @input="v => { email = v.toLowerCase()}"
+              @focus="emailFocused"
               label="Email"
               lazy-rules
               :rules="[ val => val && val.length > 0 || 'Informe seu email']"
@@ -26,14 +28,22 @@
               filled
               square
               class="full-width q-mt-sm"
-              type="password"
+              :type="isPwd ? 'password' : 'text'"
               v-model="password"
               label="Senha"
               lazy-rules
               :rules="[
                 val => val !== null && val !== '' || 'Informe sua senha'
               ]"
-            />
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd = !isPwd"
+                />
+              </template>
+            </q-input>
             <q-btn
               size="lg"
               label="Login"
@@ -78,10 +88,12 @@ import AccountService from '../services/AccountService'
 export default {
   data () {
     return {
+      isPwd: true,
       email: null,
       password: null,
       loginError: false,
       errorMessage: '',
+      myNotify: () => undefined,
       messages: [
         'Você precisa estar logado para acessar esse recurso'
       ]
@@ -97,6 +109,7 @@ export default {
           await this.$router.push({ name: 'index' })
           return
         }
+        this.$q.loading.hide()
         this.errorMessage = res.message
         this.loginError = true
       })
@@ -108,13 +121,17 @@ export default {
       this.$q.loading.show({
         message: 'Verificando suas credenciais... Aguarde...'
       })
+    },
+    emailFocused () {
+      this.myNotify()
     }
   },
   mounted () {
     const showMessage = this.$route.params.msg ? this.$route.params.msg : null
 
     if (!(showMessage === null || (showMessage - 1) > this.messages.length)) {
-      this.$q.notify({
+      this.myNotify()
+      this.myNotify = this.$q.notify({
         type: 'warning',
         message: this.messages[showMessage - 1]
       })
@@ -171,6 +188,16 @@ export default {
 .create-account-link {
   text-decoration: none;
   text-shadow: 0 1px .25rem rgb(0, 36, 33);
+}
+
+@media (max-width: 920px) {
+  .pix-logo {
+    margin: 3rem 0 0 0;
+  }
+}
+
+.app-name {
+  margin-top: 18px;
 }
 </style>
 

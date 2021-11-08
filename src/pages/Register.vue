@@ -97,7 +97,7 @@
                 lazy-rules
                 :rules="[ val => validatePass(val) || 'As senhas não conferem' ]"
               >
-                    <template v-slot:append>
+                  <template v-slot:append>
                     <q-icon
                       :name="isPwd ? 'visibility_off' : 'visibility'"
                       class="cursor-pointer"
@@ -194,7 +194,7 @@ export default {
       const response = await AccountService.register({
         first_name: this.first_name,
         last_name: this.last_name,
-        email: this.email,
+        email: this.email.toLowerCase(),
         password: this.password
       }).then((res) => {
         if (res.status === 200) {
