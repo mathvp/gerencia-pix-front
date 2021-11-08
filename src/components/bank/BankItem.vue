@@ -1,8 +1,8 @@
 <template>
   <Draggable>
-     <q-card flat bordered class="q-pa-none q-my-xs">
+     <q-card flat bordered class="q-pa-none q-my-xs noselect">
       <q-card-section class="q-pa-none bank-item">
-        <q-expansion-item>
+        <q-expansion-item class="expansion-wrapper">
           <template v-slot:header>
             <q-item-section avatar class="q-py-lg bank-image-wrapper">
               <q-icon name="drag_indicator" />
@@ -212,6 +212,14 @@ export default {
 </script>
 
 <style>
+  .expansion-wrapper .q-item {
+    padding: 0 .3rem;
+  }
+
+  .expansion-wrapper .q-item__section--main ~ .q-item__section--side {
+    padding-left: 0;
+  }
+
   .bank-image-wrapper {
     flex-direction: row;
     align-items: center;
@@ -224,4 +232,14 @@ export default {
   .bank-item .q-item {
     border-radius: 5px;
   }
+
+  .noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
 </style>

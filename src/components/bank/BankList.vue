@@ -1,5 +1,5 @@
 <template>
-  <div class="q-px-md q-pb-xl" style="width: 100%">
+  <div class="container-wrapper q-px-md q-pb-xl" style="width: 100%">
     <q-inner-loading :showing="myBanksList.length === 0">
       <q-spinner-facebook size="5rem" color="primary" />
       <div class="text-h5 text-primary text-italic">
@@ -82,6 +82,11 @@ export default {
   },
   created () {
     this.getBankData()
+    const cleanClasses = () => {
+      document.body.className = ''
+    }
+
+    document.addEventListener('touchend', cleanClasses, false)
   }
 }
 </script>
@@ -111,6 +116,21 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+@media (max-width: 920px) {
+  .container-wrapper.q-px-md {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .container-wrapper .q-item__section--avatar.q-item__section--side {
+    padding-right: 10px;
+  }
+
+  .container-wrapper .text-h6 {
+    font-size: 1.2rem;
+  }
 }
 
 </style>
