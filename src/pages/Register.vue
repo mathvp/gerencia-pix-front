@@ -36,6 +36,7 @@
                 hint="Apenas o primeiro nome. Ex.: João"
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'Informe seu Nome']"
+                data-cy="first_name"
               />
               <q-input
                 filled
@@ -47,6 +48,7 @@
                 hint="Ex.: da Silva"
                 lazy-rules
                 :rules="[ val => val && val.length > 0 || 'Informe seu Sobrenome']"
+                data-cy="last_name"
               />
               <q-input
                 filled
@@ -62,6 +64,7 @@
                   val => val && val.length > 0 || 'Informe seu email',
                   val => validateEmail(val) || 'Informe um email válido'
                 ]"
+                data-cy="email"
               />
 
               <q-input
@@ -77,6 +80,7 @@
                   val => val !== null && val !== '' || 'Informe sua senha',
                   val => val.length >= 6 || 'A senha deve conter 6 ou mais caracteres',
                 ]"
+                data-cy="password"
               >
                     <template v-slot:append>
                     <q-icon
@@ -96,6 +100,7 @@
                 hint="A mesma que o campo anterior"
                 lazy-rules
                 :rules="[ val => validatePass(val) || 'As senhas não conferem' ]"
+                data-cy="password_copy"
               >
                   <template v-slot:append>
                     <q-icon
@@ -111,6 +116,7 @@
                 class="full-width q-my-md"
                 type="submit"
                 color="red-6"
+                data-cy="btn_register"
               />
             </q-form>
             <q-btn
@@ -119,13 +125,14 @@
               label="Voltar"
               icon="arrow_back"
               :to="{ name:'login' }"
+              data-cy="btn_back"
             />
           </q-card-section>
         </q-card>
       </div>
     </div>
 
-    <q-dialog v-model="formSent">
+    <q-dialog v-model="formSent" data-cy="response_msg">
       <q-card>
         <q-card-section>
           <div class="text-h6">{{responseTitle}}</div>
