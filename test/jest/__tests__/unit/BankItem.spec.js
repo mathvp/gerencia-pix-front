@@ -1,23 +1,23 @@
-import { mount, createLocalVue, shallowMount } from '@vue/test-utils';
-import * as All from 'quasar';
+import { mount, createLocalVue, shallowMount } from '@vue/test-utils'
+import * as All from 'quasar'
 import Vue from 'vue'
 
-jest.mock("../../../src/services/PixKeyService", () => require("./__mock__/PixKeyService"));
+jest.mock("../../../../src/services/PixKeyService", () => {})
+jest.mock("../../../../src/services/BankService", () => {})
 
-import BankItem from '../../../src/components/bank/BankItem';
+import BankItem from '../../../../src/components/bank/BankItem'
 
-
-const { Quasar } = All;
+const { Quasar } = All
 
 Vue.config.silent = true
 
 const components = Object.keys(All).reduce((object, key) => {
-  const val = All[key];
+  const val = All[key]
   if (val && val.component && val.component.name != null) {
-    object[key] = val;
+    object[key] = val
   }
-  return object;
-}, {});
+  return object
+}, {})
 
 const bankDataObject = {
   code: 260,
@@ -39,13 +39,13 @@ const bankDataObject = {
 }
 
 describe('Mount Quasar', () => {
-  const localVue = createLocalVue();
-  localVue.use(Quasar, { components }); // , lang: langEn
+  const localVue = createLocalVue()
+  localVue.use(Quasar, { components })
 
   const wrapper = mount(BankItem, {
     localVue
-  });
-  const vm = wrapper.vm;
+  })
+  const vm = wrapper.vm
 
   it('has a created hook', () => {
     expect(typeof vm.keysCountText).toBe('function')
@@ -53,13 +53,13 @@ describe('Mount Quasar', () => {
 
   it('accesses the shallowMount', () => {
     expect(wrapper.text()).toContain('Chave')
-  });
+  })
 
   it('sets the correct default data', () => {
     const defaultData = BankItem.data();
     const empty = {}
     expect(defaultData.localBankData).toEqual(empty);
-  });
+  })
 
   it('should show Pix Key counter message if 1 Pix Key present', async () => {
     await wrapper.setProps({ bankData: bankDataObject })
@@ -68,6 +68,6 @@ describe('Mount Quasar', () => {
     wrapper.vm.$nextTick(() => {
       expect(wrapper.vm.done).toBe(true);
       expect(wrapper.find('.keys-counter').text()).toEqual('1 Chave cadastrada')
-    });
+    })
   })
-});
+})
