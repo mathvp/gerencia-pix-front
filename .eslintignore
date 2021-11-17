@@ -5,6 +5,7 @@
 /.quasar
 /node_modules
 /test
+/cypress
 
 .eslintrc.js
 jsconfig.json

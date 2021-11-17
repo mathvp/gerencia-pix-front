@@ -10,7 +10,9 @@
     "test": "jest",
     "test:unit": "jest ./test/jest/__tests__/unit/",
     "test:unit:coverage": "jest --coverage",
-    "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788"
+    "serve:test:coverage": "quasar serve test/jest/coverage/lcov-report/ --port 8788",
+    "cypress:open": "cypress open -d",
+    "cypress:run": "cypress run"
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
@@ -25,6 +27,7 @@
     "@quasar/quasar-app-extension-dotenv": "^1.1.0",
     "@quasar/quasar-app-extension-testing-unit-jest": "^2.2.2",
     "babel-eslint": "^10.0.1",
+    "cypress": "^9.0.0",
     "eslint": "^7.21.0",
     "eslint-config-standard": "^16.0.2",
     "eslint-plugin-import": "^2.14.0",
