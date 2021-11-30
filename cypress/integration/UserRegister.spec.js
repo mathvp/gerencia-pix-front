@@ -6,47 +6,47 @@ const email = function () {
 
 context('User Registration', () => {
 
-  // context('Register success', () => {
+  context('Register success', () => {
 
-  //   it('can access the page successfully', () => {
-  //     cy.visit('/cadastro')
-  //     cy.wait(2000)
-  //   })
+    it('can access the page successfully', () => {
+      cy.visit('/cadastro')
+      cy.wait(2000)
+    })
 
-  //   it('can fill first_name field', () => {
-  //     cy.get('input[data-cy="first_name"]').focus().type('Matheus')
-  //   })
+    it('can fill first_name field', () => {
+      cy.get('input[data-cy="first_name"]').focus().type('Matheus')
+    })
 
-  //   it('can fill last_name field', () => {
-  //     cy.get('input[data-cy="last_name"]').focus().type('Vieira Teste')
-  //   })
+    it('can fill last_name field', () => {
+      cy.get('input[data-cy="last_name"]').focus().type('Vieira Teste')
+    })
 
-  //   it('can fill email field', () => {
-  //     cy.get('input[data-cy="email"]').focus().type(email())
-  //   })
+    it('can fill email field', () => {
+      cy.get('input[data-cy="email"]').focus().type(email())
+    })
 
-  //   it('can fill password field', () => {
-  //     cy.get('input[data-cy="password"]').focus().type('123456')
-  //   })
+    it('can fill password field', () => {
+      cy.get('input[data-cy="password"]').focus().type('123456')
+    })
 
-  //   it('can fill password_copy field', () => {
-  //     cy.get('input[data-cy="password_copy"]').focus().type('123456')
-  //   })
+    it('can fill password_copy field', () => {
+      cy.get('input[data-cy="password_copy"]').focus().type('123456')
+    })
 
-  //   it('can click register', () => {
-  //     cy.get('button[data-cy="btn_register"]').click()
-  //     cy.wait(2000)
-  //   })
+    it('can click register', () => {
+      cy.get('button[data-cy="btn_register"]').click()
+      cy.wait(2000)
+    })
 
-  //   it('shows success message', () => {
-  //     cy.get('div[data-cy="response_msg"]').contains('Sua conta foi criada com sucesso')
-  //   })
+    it('shows success message', () => {
+      cy.get('div[data-cy="response_msg"]').contains('Sua conta foi criada com sucesso')
+    })
 
-  //   it('should redirect to login screen', () => {
-  //     cy.wait(2000)
-  //     cy.url().should('be.equal', `${Cypress.config("baseUrl")}/login`)
-  //   })
-  // })
+    it('should redirect to login screen', () => {
+      cy.wait(2000)
+      cy.url().should('be.equal', `${Cypress.config("baseUrl")}/login`)
+    })
+  })
 
   context('Register fails', () => {
 
