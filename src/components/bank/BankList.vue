@@ -1,6 +1,6 @@
 <template>
   <div class="container-wrapper q-px-md q-pb-xl" style="width: 100%">
-    <q-inner-loading :showing="myBanksList.length === 0">
+    <q-inner-loading :showing="myBanksList.length === 0 && !showEmptyMessage">
       <q-spinner-facebook size="5rem" color="primary" />
       <div class="text-h5 text-primary text-italic">
         Carregando dados, por favor, aguarde...
