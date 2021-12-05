@@ -31,10 +31,8 @@ export default {
     const response = await axiosInstance.get(`users/banks/${bankCode}/custom`, config).then((res) => {
       return { status: res.status, data: res.data }
     }).catch((error) => {
-      if (typeof error.status === 'undefined') {
-        return { status: 500, message: 'Não foi possível obter os dados...' }
-      }
-      return { status: error.response.status, message: error.response.data.error }
+      const msg = 'Nenhum Banco cadastrado...'
+      return { status: error.response.status, message: msg }
     })
 
     return response
